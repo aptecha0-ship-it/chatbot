@@ -5,7 +5,11 @@ import streamlit as st
 
 st.title("CHATBOT")
 
-client = genai.Client(api_key = "AIzaSyDLewlgbBS3cDvA4bSyBbi2q111CqKDJaU")
+api_key = st.secrets["GOOGLE_API_KEY"]
+
+
+
+client = genai.Client(api_key = api_key )
 
 
 
@@ -38,14 +42,12 @@ if user_input:
             "parts": [{"text": msg["content"]}]             
         })
 
-    print(contents) 
+ 
     response = client.models.generate_content(
         model="gemini-3-flash-preview",   
         contents=contents,
     )
 
-    # Store and display AI response
     st.session_state.messages.append({"role": "assistant", "content": response.text})
     with st.chat_message("assistant"):
         st.write(response.text)
-# print(response.text)
